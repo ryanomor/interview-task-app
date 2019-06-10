@@ -1,8 +1,15 @@
 import React from 'react';
 
-const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, handleChange, handleDelete, handleComplete, handleSubmit, handleVote}) => {
-    tasks.sort((task1, task2) => Date.parse(task1.dueDate) - Date.parse(task2.dueDate)); // Sorts tasks by due date. Closer deadlines go to the top!
-    
+const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, handleChange, deleteById, handleComplete, handleSubmit, handleFilter}) => {
+    // Sorts tasks by due date. Closer deadlines go to the top!
+    tasks.sort((task1, task2) => Date.parse(`${task1.dueDate.year}-${task1.dueDate.month}-${task1.dueDate.day}`) - Date.parse(`${task2.dueDate.year}-${task2.dueDate.month}-${task2.dueDate.day}`)); 
+    const taskFilters = [
+      'Overdue',
+      'Completed',
+      'Due Today',
+      'Due Tomorrow',
+    ];
+
     return (
       <div>
         <h1> Submit a Task! </h1>
@@ -22,13 +29,18 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
 
         <hr />
 
+        <label>Filter By:</label>
+        <select onChange={handleFilter}>
+          {taskFilters.map((filter, key) => <option key={key}>{filter}</option>)}
+        </select>
+
         <ol>
           {tasks.map((task, idx) => (
             <li key={idx} value={idx}>
               <p> Task: {task.taskname} </p>
               <p> Description: {task.taskDescription} </p>
-              <p> Due: {new Date(task.dueDate).toLocaleDateString()} </p>
-              <button onClick={handleDelete}>Remove Task</button>
+              <p> Due: {`${task.dueDate.month}/${task.dueDate.day}/${task.dueDate.year}`} </p>
+              <button onClick={deleteById}>Remove Task</button>
               <input type='checkbox' checked={task.completed} onChange={handleComplete} />
             </li>
           ))}

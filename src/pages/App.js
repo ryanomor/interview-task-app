@@ -33,15 +33,11 @@ class App extends Component {
   }
 
   handleChange = e => {
-    if (e.target.name === 'due') {
-      console.log(e.target.value);
-      console.log(Date.parse(e.target.value));
-    }
     this.setState({
       [e.target.name]: e.target.value,
       errorMessage: ''
     });
-  };
+  }
 
   handleToggle = () => {
     let { toggleOn } = this.state;
@@ -51,8 +47,9 @@ class App extends Component {
         toggleOn: true,
       });
     }
-  };
+  }
 
+  // Submits a new task to datastore and server
   handleSubmit = e => {
     e.preventDefault();
 
@@ -76,10 +73,12 @@ class App extends Component {
       return;
     }
 
+    const date = due.split('-');
+
     const newTask = {
       taskname: task,
       taskDescription: description,
-      dueDate: due,
+      dueDate: { month: date[1], day: date[2], year: date[0] },
       completed: false
     };
 
@@ -95,10 +94,11 @@ class App extends Component {
         });
       })
       .catch(err => {
-        console.log('Error:', err)
+        console.log('Error:', err);
       });
-  };
+  }
 
+  // Patches a task's completed property by id
   handleComplete = e => {
     const taskId = e.target.parentElement.value;
     const { dispatch } = this.props;
@@ -109,7 +109,7 @@ class App extends Component {
     }
 
     axios
-      .post('/completed', updatedTask)
+      .post(`/completed/${taskId}`, updatedTask)
       .then(res => {
         console.log(res.data.message);
         dispatch(updateCompleted(updatedTask.index, updatedTask.completed));
@@ -118,7 +118,8 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  handleDelete = e => {
+  // Deletes a task by id
+  deleteById = e => {
     e.preventDefault();
     const taskId = e.target.parentElement.value;
     const { dispatch } = this.props;
@@ -128,13 +129,17 @@ class App extends Component {
     }
 
     axios
-      .post('/delete', task)
+      .post(`/delete/${taskId}`, task)
       .then(res => {
         console.log(res.data.message);
         dispatch(removeTask(task.index));
         this.setState({});
       })
       .catch(err => console.log(err));
+  }
+
+  handleFilter = e => {
+    console.log(e.target.value);
   }
 
   handleVote = e => {
@@ -154,7 +159,7 @@ class App extends Component {
         this.setState({});
       })
       .catch(err => console.log(err))
-  };
+  }
 
   render() {
     const { task, toggleOn, description, due, errorMessage } = this.state;
@@ -170,10 +175,10 @@ class App extends Component {
           tasks={this.props.tasks} 
           handleToggle={this.handleToggle}
           handleChange={this.handleChange}
-          handleDelete={this.handleDelete}
+          deleteById={this.deleteById}
           handleComplete={this.handleComplete}
           handleSubmit={this.handleSubmit}
-          handleVote={this.handleVote}
+          handleFilter={this.handleFilter}
         />
       </div>
     );

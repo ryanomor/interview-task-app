@@ -10,7 +10,13 @@ let tasks = [
   {
     taskname: 'Do chores', 
     taskDescription: 'Take out trash, buy groceries, do laundry', 
-    dueDate: new Date(),
+    dueDate: { month: new Date().getMonth() + 1, day: new Date().getDate(), year: new Date().getFullYear() },
+    completed: false,
+  },
+  {
+    taskname: 'Technical Interview', 
+    taskDescription: 'Technical interview with Justin Hale\'s team', 
+    dueDate: { month: new Date(2019, 5, 12).getMonth() + 1, day: new Date(2019, 5, 12).getDate(), year: new Date(2019, 5, 12).getFullYear() },
     completed: false,
   }
 ];
@@ -31,7 +37,10 @@ app.get('/tasks', (req, res) => {
  * Saves a Task that a user submitted.
  */
 app.post('/', (req, res) => {
-  tasks = [req.body, ...tasks];
+  const newTask = { ...req.body };
+
+  tasks = [newTask, ...tasks];
+
   res
     .status(200)
     .json({
@@ -40,9 +49,22 @@ app.post('/', (req, res) => {
 });
 
 /**
- * Deletes a selected Task.
+ * Find Task by id.
  */
-app.post('/delete', (req, res) => {
+app.get('/task/:id', (req, res) => {
+  task = tasks.filter((task, index) => index === req.body.index);
+  res
+    .status(200)
+    .json({
+      data: task,
+      message: 'Task found!'
+    });
+});
+
+/**
+ * Delete Task by id.
+ */
+app.post('/delete/:id', (req, res) => {
   tasks = tasks.filter((task, index) => index !== req.body.index);
   res
     .status(200)
@@ -52,9 +74,9 @@ app.post('/delete', (req, res) => {
 });
 
 /**
- * Updates specified task's completed field
+ * Patch Task by id
  */
-app.post('/completed', (req, res) => {
+app.post('/completed/:id', (req, res) => {
   const { index, completed } = req.body;
 
   tasks[index].completed = completed;
