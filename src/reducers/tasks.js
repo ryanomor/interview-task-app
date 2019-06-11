@@ -7,21 +7,12 @@ export const tasks = (state = [], action) => {
             return [action.task, ...state];
         }
         case "REMOVE_TASK": {
-            state = state.filter((task, id) => id !== action.index);
+            state = state.filter((task, id) => id !== action.id);
             return state;
         }
         case "UPDATE_COMPLETED": {
-            const task = state[action.index];
+            const task = state[action.id];
             task.completed = action.completed;
-            return state;
-        }
-        case "UPDATE_VOTES": {
-            let updatedStory = state[action.index];
-            if (action.newVote === 'up') {
-                updatedStory.votes++;
-            } else {
-                updatedStory.votes--;
-            }
             return state;
         }
         default:

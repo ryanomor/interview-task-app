@@ -13,18 +13,12 @@ module.exports = {
 
     updateCompleted: (id, completed) => ({
         type: "UPDATE_COMPLETED",
-        index: id,
+        id: id,
         completed: completed
     }),
 
     removeTask: (id) => ({
         type: "REMOVE_TASK",
-        index: id
+        id: id
     }),
-
-    updateVotes: (id, vote) => ({
-        type: "UPDATE_VOTES",
-        index: id,
-        newVote: vote
-    })
 };

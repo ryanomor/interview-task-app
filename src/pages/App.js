@@ -106,7 +106,7 @@ class App extends Component {
     const { dispatch } = this.props;
 
     const updatedTask = {
-      index: taskId,
+      id: taskId,
       completed: e.target.checked
     }
 
@@ -114,7 +114,7 @@ class App extends Component {
       .patch(`/completed/${taskId}`, updatedTask)
       .then(res => {
         console.log(res.data.message);
-        dispatch(updateCompleted(updatedTask.index, updatedTask.completed));
+        dispatch(updateCompleted(updatedTask.id, updatedTask.completed));
         this.setState({});
       })
       .catch(err => {
@@ -129,7 +129,7 @@ class App extends Component {
     const { dispatch } = this.props;
 
     const task = {
-      index: taskId
+      id: taskId
     }
 
     axios

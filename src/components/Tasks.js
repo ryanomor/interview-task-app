@@ -47,7 +47,7 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
             }
 
             return (
-            <li key={idx} value={idx}>
+            <li key={idx} value={task.id}>
               <p className={indicator}> Task: {task.taskname} </p>
               <p> Description: {task.taskDescription} </p>
               <p> Due: {`${task.dueDate.month}/${task.dueDate.day}/${task.dueDate.year}`} </p>
