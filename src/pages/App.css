@@ -39,3 +39,15 @@ form > button {
   display: block;
   margin-bottom: 0.5em;
 }
+
+.overdue {
+  color: red;
+}
+
+.soon {
+  color: gold;
+}
+
+.fine {
+  color: green;
+}

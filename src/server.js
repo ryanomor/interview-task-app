@@ -12,12 +12,18 @@ let tasks = [
     taskDescription: 'Take out trash, buy groceries, do laundry', 
     dueDate: { month: new Date().getMonth() + 1, day: new Date().getDate(), year: new Date().getFullYear() },
     completed: false,
+    isOverdue: false,
+    dueToday: true,
+    dueTomorrow: false
   },
   {
     taskname: 'Technical Interview', 
     taskDescription: 'Technical interview with Justin Hale\'s team', 
     dueDate: { month: new Date(2019, 5, 12).getMonth() + 1, day: new Date(2019, 5, 12).getDate(), year: new Date(2019, 5, 12).getFullYear() },
     completed: false,
+    isOverdue: false,
+    dueToday: this.year == new Date().getFullYear() && this.month == new Date().getMonth() + 1 && this.day == new Date().getDate(),
+    dueTomorrow: false
   }
 ];
 
@@ -29,7 +35,7 @@ app.get('/tasks', (req, res) => {
     .status(200)
     .json({
       data: tasks, 
-      message: 'All tasks sent!'
+      message: 'All Tasks sent!'
     });
 });
 
@@ -37,14 +43,20 @@ app.get('/tasks', (req, res) => {
  * Saves a Task that a user submitted.
  */
 app.post('/', (req, res) => {
+  const today = new Date();
+  const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
   const newTask = { ...req.body };
+  newTask.isOverdue = Date.parse(`${newTask.dueDate.year}-${newTask.dueDate.month}-${newTask.dueDate.day}`) < Date.parse(today);
+  newTask.dueToday = newTask.dueDate.year == today.getFullYear() && newTask.dueDate.month == today.getMonth() + 1 && newTask.dueDate.day == today.getDate();
+  newTask.dueTomorrow = newTask.dueDate.year == tomorrow.getFullYear() && newTask.dueDate.month == tomorrow.getMonth() + 1 && newTask.dueDate.day == tomorrow.getDate();
 
   tasks = [newTask, ...tasks];
 
   res
     .status(200)
     .json({
-      message: 'New task added!'
+      message: 'New Task added!'
     });
 });
 
@@ -62,6 +74,49 @@ app.get('/task/:id', (req, res) => {
 });
 
 /**
+ * Find Task(s) by filter.
+ */
+app.get('/filter/:filter', (req, res) => {
+  const filter = req.params.filter;
+  let filteredTasks;
+  let message;
+  
+  switch (filter) {
+    case 'Overdue': {
+      filteredTasks = tasks.filter(task => task.isOverdue === true);
+      message = 'Filtered overdue Tasks';
+      break;
+    }
+    case 'Completed': {
+      filteredTasks = tasks.filter(task => task.completed === true);
+      message = 'Filtered completed Tasks';
+      break;
+    }
+    case 'Due Today': {
+      filteredTasks = tasks.filter(task => task.dueToday === true);
+      message = 'Filtered Tasks due today';
+      break;
+    }
+    case 'Due Tomorrow': {
+      filteredTasks = tasks.filter(task => task.dueTomorrow === true);
+      message = 'Filtered Tasks due tomorrow';
+      break;
+    }
+    default: {
+      filteredTasks = tasks;
+      message = 'No Tasks filtered';
+    }
+
+    res
+        .status(200)
+        .json({
+          data: filteredTasks, 
+          message: message
+        });
+  }
+});
+
+/**
  * Delete Task by id.
  */
 app.post('/delete/:id', (req, res) => {
@@ -76,7 +131,7 @@ app.post('/delete/:id', (req, res) => {
 /**
  * Patch Task by id
  */
-app.post('/completed/:id', (req, res) => {
+app.patch('/completed/:id', (req, res) => {
   const { index, completed } = req.body;
 
   tasks[index].completed = completed;
@@ -85,26 +140,6 @@ app.post('/completed/:id', (req, res) => {
     .status(200)
     .json({
       message: 'Task updated!'
-    });
-});
-
-
-/**
- * Updates specific story's votes
- */
-app.post('/votes', (req, res) => {
-  const { index, newVote } = req.body;
-
-  if (newVote == 'up') {
-    tasks[index].votes++;
-  } else {
-    tasks[index].votes--;
-  }
-
-  res
-    .status(200)
-    .json({
-      message: 'Votes updated!'
     });
 });
 

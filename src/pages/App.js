@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setTasks, addTask, updateCompleted, removeTask, updateVotes } from '../actions/Actions';
+import { setTasks, addTask, updateCompleted, removeTask } from '../actions/Actions';
 import Tasks from '../components/Tasks';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -89,8 +89,9 @@ class App extends Component {
         dispatch(addTask(newTask));
         this.setState({
           toggleOn: false,
-          taskname: '',
-          description: ''
+          task: '',
+          description: '',
+          due: ''
         });
       })
       .catch(err => {
@@ -98,7 +99,7 @@ class App extends Component {
       });
   }
 
-  // Patches a task's completed property by id
+  // Sends a patch request for a Task by id
   handleComplete = e => {
     const taskId = e.target.parentElement.value;
     const { dispatch } = this.props;
@@ -109,16 +110,18 @@ class App extends Component {
     }
 
     axios
-      .post(`/completed/${taskId}`, updatedTask)
+      .patch(`/completed/${taskId}`, updatedTask)
       .then(res => {
         console.log(res.data.message);
         dispatch(updateCompleted(updatedTask.index, updatedTask.completed));
         this.setState({});
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err)
+      });
   }
 
-  // Deletes a task by id
+  // Sends a Delete request
   deleteById = e => {
     e.preventDefault();
     const taskId = e.target.parentElement.value;
@@ -135,30 +138,26 @@ class App extends Component {
         dispatch(removeTask(task.index));
         this.setState({});
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+      });
   }
 
+  // Sends a get request to filter Tasks
   handleFilter = e => {
-    console.log(e.target.value);
-  }
-
-  handleVote = e => {
-    const vote = e.target.getAttribute('name').split('-'); // creates an array with the story's index, aka its id, and either 'up' or 'down'
+    const filter = e.target.value;
     const { dispatch } = this.props;
-    
-    let updateVote = {
-      index: vote[0],
-      newVote: vote[1]
-    };
 
     axios
-      .post('/votes', updateVote)
+      .get(`/filter/${filter}`)
       .then(res => {
-        console.log(res.data.message);
-        dispatch(updateVotes(updateVote.index, updateVote.newVote));
-        this.setState({});
+        const { data, message } = res.data;
+        console.log(message);
+        dispatch(setTasks(data));
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {

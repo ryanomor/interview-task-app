@@ -4,6 +4,7 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
     // Sorts tasks by due date. Closer deadlines go to the top!
     tasks.sort((task1, task2) => Date.parse(`${task1.dueDate.year}-${task1.dueDate.month}-${task1.dueDate.day}`) - Date.parse(`${task2.dueDate.year}-${task2.dueDate.month}-${task2.dueDate.day}`)); 
     const taskFilters = [
+      'None',
       'Overdue',
       'Completed',
       'Due Today',
@@ -35,15 +36,25 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
         </select>
 
         <ol>
-          {tasks.map((task, idx) => (
+          {tasks.map((task, idx) => {
+            let indicator;
+            if (task.dueToday || task.dueTomorrow) {
+              indicator = 'soon';
+            } else if (task.isOverdue) {
+              indicator = 'overdue';
+            } else {
+              indicator = 'fine';
+            }
+
+            return (
             <li key={idx} value={idx}>
-              <p> Task: {task.taskname} </p>
+              <p className={indicator}> Task: {task.taskname} </p>
               <p> Description: {task.taskDescription} </p>
               <p> Due: {`${task.dueDate.month}/${task.dueDate.day}/${task.dueDate.year}`} </p>
               <button onClick={deleteById}>Remove Task</button>
               <input type='checkbox' checked={task.completed} onChange={handleComplete} />
             </li>
-          ))}
+          )})}
         </ol>
       </div>
     );
