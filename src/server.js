@@ -115,7 +115,7 @@ app.get('/filter/:filter', (req, res) => {
  * Delete Task by id.
  */
 app.post('/delete/:id', (req, res) => {
-  tasks = tasks.filter((task, index) => index !== req.body.index);
+  tasks = tasks.filter(task => task.id !== req.body.id);
   res
     .status(200)
     .json({
@@ -129,7 +129,8 @@ app.post('/delete/:id', (req, res) => {
 app.patch('/completed/:id', (req, res) => {
   const { id, completed } = req.body;
 
-  tasks[id].completed = completed;
+  const targetTask = tasks.find(task => task.id === id);
+  targetTask.completed = completed;
 
   res
     .status(200)

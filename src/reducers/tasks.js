@@ -7,11 +7,11 @@ export const tasks = (state = [], action) => {
             return [action.task, ...state];
         }
         case "REMOVE_TASK": {
-            state = state.filter((task, id) => id !== action.id);
+            state = state.filter(task => task.id !== action.id);
             return state;
         }
         case "UPDATE_COMPLETED": {
-            const task = state[action.id];
+            const task = state.find(task => task.id === action.id);
             task.completed = action.completed;
             return state;
         }

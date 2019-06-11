@@ -108,7 +108,7 @@ class App extends Component {
     const updatedTask = {
       id: taskId,
       completed: e.target.checked
-    }
+    };
 
     axios
       .patch(`/completed/${taskId}`, updatedTask)
@@ -136,8 +136,7 @@ class App extends Component {
       .post(`/delete/${taskId}`, task)
       .then(res => {
         console.log(res.data.message);
-        dispatch(removeTask(task.index));
-        this.setState({});
+        dispatch(removeTask(task.id));
       })
       .catch(err => {
         console.log(err);
