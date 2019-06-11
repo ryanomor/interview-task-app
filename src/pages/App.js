@@ -85,9 +85,9 @@ class App extends Component {
     axios
       .post('/', newTask)
       .then(res => {
-        const { data, message } = res.data;
+        const { task, message } = res.data;
         console.log(message);
-        dispatch(addTask(data));
+        dispatch(addTask(task));
         this.setState({
           toggleOn: false,
           task: '',

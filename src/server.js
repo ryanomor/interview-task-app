@@ -56,6 +56,7 @@ app.post('/', (req, res) => {
   res
     .status(200)
     .json({
+      task: newTask,
       message: 'New Task added!'
     });
 });
@@ -78,41 +79,66 @@ app.get('/task/:id', (req, res) => {
  */
 app.get('/filter/:filter', (req, res) => {
   const filter = req.params.filter;
-  let filteredTasks;
-  let message;
+  let filteredTasks = tasks; 
+  let message = 'No Tasks filtered';
   
   switch (filter) {
     case 'Overdue': {
       filteredTasks = tasks.filter(task => task.isOverdue === true);
       message = 'Filtered overdue Tasks';
+
+      res
+      .status(200)
+      .json({
+        data: filteredTasks, 
+        message: message
+      });
       break;
     }
     case 'Completed': {
       filteredTasks = tasks.filter(task => task.completed === true);
       message = 'Filtered completed Tasks';
+
+      res
+      .status(200)
+      .json({
+        data: filteredTasks, 
+        message: message
+      });
       break;
     }
     case 'Due Today': {
       filteredTasks = tasks.filter(task => task.dueToday === true);
       message = 'Filtered Tasks due today';
+
+      res
+      .status(200)
+      .json({
+        data: filteredTasks, 
+        message: message
+      });
       break;
     }
     case 'Due Tomorrow': {
       filteredTasks = tasks.filter(task => task.dueTomorrow === true);
       message = 'Filtered Tasks due tomorrow';
+
+      res
+      .status(200)
+      .json({
+        data: filteredTasks, 
+        message: message
+      });
       break;
     }
     default: {
-      filteredTasks = tasks;
-      message = 'No Tasks filtered';
+      res
+      .status(200)
+      .json({
+        data: filteredTasks, 
+        message: message
+      });
     }
-
-    res
-        .status(200)
-        .json({
-          data: filteredTasks, 
-          message: message
-        });
   }
 });
 
