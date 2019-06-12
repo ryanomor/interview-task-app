@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 information about using `Create React App`, click the previous link.
 
 # Quickstart
-From the project's root, you can simply run `/bin/sh start`, or for a more a more in depth start, refer to the next section.
+From the project's root, you can simply run `/bin/sh start.sh`, or for a more a more in depth start, refer to the next section.
 
 ## (Not so quick) Start
 * In your terminal, navigate to `backend` and execute `docker build -t express-server .`.
