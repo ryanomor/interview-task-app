@@ -1,13 +1,15 @@
 # Quickstart
-From the project's root, you can simply run `/bin/sh start.sh`, or for a more a more in depth start, refer to the next section.
+* From the project's root, you can simply run `/bin/sh start.sh`, or for a more a more in depth start, refer to the next section.
 
-Once done with the app, simply run `/bin/sh stop.sh` from the root of the project to remove the containters and images from your machine.
+* Once done with the app, simply run `/bin/sh stop.sh` from the root of the project to remove the containters and images from your machine.
+
+* Only caveat is you'll need to be running on a Mac OS for these scripts to successfully execute.
 
 ## (Not so quick) Start
-* In your terminal, navigate to `backend` and execute `docker build -t express-server .`.
+* In your terminal, navigate to `backend` and execute `docker build -t express-server .`  
   Verify the container was successfully built by executeing `docker images`.
 
-  Once done, navigate to `client` and execute `docker build -t app-frontend .`.
+  Once done, navigate to `client` and execute `docker build -t app-frontend .`  
   Again, make sure the container was successfully built using `docker images`.
 
 * Once both images have been built successfully, you can navigate to `localhost:3000` to view the app!
