@@ -1,0 +1,46 @@
+{
+  "name": "task",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "taskname": {
+      "type": "string",
+      "required": true
+    },
+    "taskDescription": {
+      "type": "string",
+      "required": true
+    },
+    "dueDate": {
+      "type": "object",
+      "required": true
+    },
+    "completed": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isOverdue": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "dueToday": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "dueTomorrow": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

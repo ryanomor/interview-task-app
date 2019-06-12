@@ -1,0 +1,65 @@
+.App {
+  text-align: center;
+}
+
+ol {
+  padding-top: 1em;
+  padding-left: 0.5em;
+}
+
+li {
+  padding-left: 35px;
+  text-align: left;
+}
+
+li > span {
+  display: block;
+  float: left;
+  padding-right: 15px;
+}
+
+li > span > div {
+  text-align: center;
+}
+
+li > span > div:hover {
+  cursor: pointer;
+}
+
+form {
+  display: inline-block;
+}
+
+form > input {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+form > button {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.checkbox {
+  display: block;
+  float: right;
+  margin-right: 55px;
+}
+
+.filter {
+  display: block;
+  float: left;
+  margin-left: 35px;
+}
+
+.overdue {
+  color: red;
+}
+
+.soon {
+  color: gold;
+}
+
+.fine {
+  color: green;
+}

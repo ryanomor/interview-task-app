@@ -1,0 +1,12 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "inMemDatasource": {
+    "name": "inMemDatasource",
+    "localStorage": "",
+    "file": "",
+    "connector": "memory"
+  }
+}
