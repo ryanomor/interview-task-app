@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, handleChange, deleteById, handleComplete, handleSubmit, handleFilter}) => {
+const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, toggleHidden, isHidden, message, handleChange, deleteById, handleComplete, handleSubmit, handleFilter}) => {
     // Sorts tasks by due date. Closer deadlines go to the top!
     tasks.sort((task1, task2) => Date.parse(`${task1.dueDate.year}-${task1.dueDate.month}-${task1.dueDate.day}`) - Date.parse(`${task2.dueDate.year}-${task2.dueDate.month}-${task2.dueDate.day}`)); 
     const taskFilters = [
@@ -42,6 +42,7 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
         </span>
 
         <ol>
+          Tasks:
           {tasks.map((task, idx) => {
             let indicator;
             if (task.dueToday || task.dueTomorrow) {
@@ -53,12 +54,17 @@ const Tasks = ({task, toggleOn, description, due, tasks, handleToggle, message, 
             }
 
             return (
-            <li key={idx} value={task.id}>
-              <p className={indicator}> Task: {task.taskname} </p>
+              <li key={idx} id={task.id}>
+              <p className={indicator} onClick={toggleHidden}> {task.taskname} </p>
               <input className='checkbox' type='checkbox' checked={task.completed} onChange={handleComplete} />
-              <p> Description: {task.taskDescription} </p>
-              <p> Due: {`${task.dueDate.month}/${task.dueDate.day}/${task.dueDate.year}`} </p>
-              <button onClick={deleteById}>Remove Task</button>
+              {isHidden[task.id] === true ? 
+                '' : 
+                <span>
+                  <p> Description: {task.taskDescription} </p>
+                  <p className={indicator}> Due: {`${task.dueDate.month}/${task.dueDate.day}/${task.dueDate.year}`} </p>
+                  <button onClick={deleteById}>Remove Task</button>
+                </span> 
+              }
             </li>
           )})}
         </ol>
