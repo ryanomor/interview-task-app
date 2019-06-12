@@ -143,18 +143,14 @@ class App extends Component {
   // Sends a Delete request
   deleteById = e => {
     e.preventDefault();
-    const taskId = e.target.parentElement.id;
+    const taskId = Number(e.target.parentElement.parentElement.id);
     const { dispatch } = this.props;
 
-    const task = {
-      id: taskId
-    }
-
     axios
-      .delete(`/tasks/${taskId}`, task)
+      .delete(`/tasks/${taskId}`)
       .then(res => {
         console.log(res.data.message);
-        dispatch(removeTask(task.id));
+        dispatch(removeTask(taskId));
       })
       .catch(err => {
         console.log(err);
