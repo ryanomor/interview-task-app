@@ -70,7 +70,7 @@ module.exports = function(app) {
   
       // Updates each Task's properties to reflect their relation to today & tomorrow
       tasks.forEach(task => {
-        task.isOverdue = Date.parse(`${task.dueDate.year}-${task.dueDate.month}-${task.dueDate.day}`) < Date.parse(today);
+        task.isOverdue = Date.parse(`${task.dueDate.year}-${task.dueDate.month}-${task.dueDate.day}`) < Date.parse(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`);
         task.dueToday = task.dueDate.year == today.getFullYear() && task.dueDate.month == today.getMonth() + 1 && task.dueDate.day == today.getDate();
         task.dueTomorrow = task.dueDate.year == tomorrow.getFullYear() && task.dueDate.month == tomorrow.getMonth() + 1 && task.dueDate.day == tomorrow.getDate();
       });
@@ -126,7 +126,9 @@ module.exports = function(app) {
    * Delete Task by id.
    */
   router.delete('/tasks/:id', (req, res) => {
-    tasks = tasks.filter(task => task.id !== req.body.id);
+    const taskId = Number(req.params.id);
+    tasks = tasks.filter(task => task.id !== taskId);
+    
     res
       .status(200)
       .json({
