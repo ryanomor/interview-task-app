@@ -3,23 +3,34 @@
 }
 
 ol {
+  text-align: left;
+  font-weight: bold;
+  display: grid;
+  grid-row-gap: 1em;
+  grid-template-columns: 85% 10%;
+  justify-content: space-around;
   padding-top: 1em;
   padding-left: 0.5em;
 }
 
 li {
+  grid-column: 1;
   padding-left: 35px;
-  text-align: left;
+}
+li > p {
+  display: inline;
 }
 
 li > span {
-  display: block;
-  float: left;
   padding-right: 15px;
 }
 
 li > span > div {
   text-align: center;
+}
+
+li > input {
+  float: right;
 }
 
 li > span > div:hover {
@@ -41,9 +52,8 @@ form > button {
 }
 
 .checkbox {
-  display: block;
-  float: right;
-  margin-right: 55px;
+  grid-column: 2;
+  margin-left: 50%;
 }
 
 .filter {
@@ -54,12 +64,15 @@ form > button {
 
 .overdue {
   color: red;
+  cursor: pointer;
 }
 
 .soon {
   color: gold;
+  cursor: pointer;
 }
 
 .fine {
   color: green;
+  cursor: pointer;
 }
