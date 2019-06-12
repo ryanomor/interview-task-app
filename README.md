@@ -1,6 +1,24 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). For 
 information about using `Create React App`, click the previous link.
 
+# Quickstart
+From the project's root, you can simply run `/bin/sh start`, or for a more a more in depth start, refer to the next section.
+
+## (Not so quick) Start
+* In your terminal, navigate to `backend` and execute `docker build -t express-server .`.
+  Verify the container was successfully built by executeing `docker images`.
+
+  Once done, navigate to `client` and execute `docker build -t app-frontend .`.
+  Again, make sure the container was successfully built using `docker images`.
+
+* Once both images have been built successfully, you can navigate to `localhost:3000` to view the app!
+    * API documentation is at `localhost:3001/explorer`
+
+### Now let's generate and run an instance of our images!
+* In `backend` run the command: `docker run -d --name app-server -p 3001:3001 express-server`. The `-d` runs the command in detahced mode, `--name` flag gives the app a name and `-p` tag maps your machine's local port to the port exposed in the container.
+
+Next in `client`, run: `docker run -d --link app-server:server --name task-app -p 3000:3000 app-frontend` where `--link` creates an alias that can be used to communicate with the backend.
+
 # Problem Overview
 To get started, install all dependencies by running `yarn` or `npm install`. As an optional bonus, feel free to write
 some unit tests for the reducers and/or components. There is no single "right" way to implement this problem -- it is 
