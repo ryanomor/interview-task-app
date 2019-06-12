@@ -9,15 +9,17 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      toggleOn: false,
-      task: '',
-      description: '',
       due: '',
+      task: '',
+      isHidden: {},
+      description: '',
+      toggleOn: false,
       errorMessage: ''
     };
   }
 
   componentDidMount() {
+    const { isHidden } = this.state;
     const { dispatch } = this.props;
     
     axios
@@ -26,10 +28,15 @@ class App extends Component {
         const { data, message } = res.data;
         dispatch(setTasks(data));
         console.log(message)
+        data.forEach(task => {
+          isHidden[task.id] = true
+        });
+        this.setState({isHidden});
       })
       .catch(err => {
         console.log(err);
       });
+
   }
 
   handleChange = e => {
@@ -49,11 +56,19 @@ class App extends Component {
     }
   }
 
+  toggleHidden = e => {
+    const { isHidden } = this.state;
+    const taskId = e.target.parentElement.id;
+    isHidden[taskId] = !isHidden[taskId];
+
+    this.setState({ isHidden });
+  }
+
   // Submits a new task to datastore and server
   handleSubmit = e => {
     e.preventDefault();
 
-    const { task, description, due } = this.state;
+    const { isHidden, task, description, due } = this.state;
     const { dispatch } = this.props;
 
     if (!task) {
@@ -88,11 +103,13 @@ class App extends Component {
         const { task, message } = res.data;
         console.log(message);
         dispatch(addTask(task));
+        isHidden[task.id] = true;
         this.setState({
-          toggleOn: false,
+          due: '',
           task: '',
           description: '',
-          due: ''
+          toggleOn: false,
+          isHidden: isHidden
         });
       })
       .catch(err => {
@@ -102,7 +119,8 @@ class App extends Component {
 
   // Sends a patch request for a Task by id
   handleComplete = e => {
-    const taskId = e.target.parentElement.value;
+    e.stopPropagation();
+    const taskId = Number(e.target.parentElement.id);
     const { dispatch } = this.props;
 
     const updatedTask = {
@@ -125,7 +143,7 @@ class App extends Component {
   // Sends a Delete request
   deleteById = e => {
     e.preventDefault();
-    const taskId = e.target.parentElement.value;
+    const taskId = e.target.parentElement.id;
     const { dispatch } = this.props;
 
     const task = {
@@ -145,11 +163,34 @@ class App extends Component {
 
   // Sends a get request to filter Tasks
   handleFilter = e => {
-    const filter = e.target.value;
+    let filter;
+
+    switch (e.target.value) {
+      case 'Completed': {
+        filter = 'completed';
+        break;
+      }
+      case 'Overdue': {
+        filter = 'isOverdue';
+        break;
+      }
+      case 'Due Today': {
+        filter = 'dueToday';
+        break;
+      }
+      case 'Due Tomorrow': {
+        filter = 'dueTomorrow';
+        break;
+      }
+      default: {
+        filter = '';
+      }
+    };
+
     const { dispatch } = this.props;
 
     axios
-      .get(`/tasks?filter=${filter}`)
+      .get(`/tasks?filter[where][filter]=${filter}`)
       .then(res => {
         const { data, message } = res.data;
         console.log(message);
@@ -161,7 +202,7 @@ class App extends Component {
   }
 
   render() {
-    const { task, toggleOn, description, due, errorMessage } = this.state;
+    const { task, toggleOn, isHidden, description, due, errorMessage } = this.state;
     
     return (
       <div className='App'>
@@ -173,6 +214,8 @@ class App extends Component {
           message={errorMessage}
           tasks={this.props.tasks} 
           handleToggle={this.handleToggle}
+          isHidden={isHidden}
+          toggleHidden={this.toggleHidden}
           handleChange={this.handleChange}
           deleteById={this.deleteById}
           handleComplete={this.handleComplete}
