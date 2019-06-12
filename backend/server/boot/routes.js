@@ -24,22 +24,31 @@ module.exports = function(app) {
    * Find Task(s) by filter.
    */
   function filterBy(filter) {
-    let filteredTasks = tasks; 
-    let message = 'No Tasks filtered';
+    let filteredTasks = tasks.filter(task => task[filter] === true); 
+    let message;
     
-    if (filter === 'Overdue') {
-      filteredTasks = tasks.filter(task => task.isOverdue === true);
-      message = 'Filtered overdue Tasks';
-    } else if (filter === 'Completed') {
-      filteredTasks = tasks.filter(task => task.completed === true);
-      message = 'Filtered completed Tasks';
-    } else if (filter === 'Due Today') {
-      filteredTasks = tasks.filter(task => task.dueToday === true);
-      message = 'Filtered Tasks due today';
-    } else if (filter === 'Due Tomorrow') {
-      filteredTasks = tasks.filter(task => task.dueTomorrow === true);
-      message = 'Filtered Tasks due tomorrow';
+    switch (filter) {
+      case 'isOverdue': {
+        message = 'Filtered overdue Tasks';
+        break;
+      }
+      case 'completed': {
+        message = 'Filtered completed Tasks';
+        break;
+      }
+      case 'dueToday': {
+        message = 'Filtered Tasks due today';
+        break;
+      }
+      case 'dueTomorrow': {
+        message = 'Filtered Tasks due tomorrow';
+        break;
+      }
+      default:
+        filteredTasks = tasks;
+        message = 'No Tasks filtered';
     }
+
     return {
       data: filteredTasks, 
       message: message
@@ -51,8 +60,9 @@ module.exports = function(app) {
    */
   router.get('/tasks', (req, res) => {
     let data;
+    
     if (req.query.filter) {
-      const { filter } = req.query;
+      const { filter } = req.query.filter.where;
       data = filterBy(filter);
     } else {
       const today = new Date();
