@@ -70,7 +70,7 @@ module.exports = function(app) {
   
       // Updates each Task's properties to reflect their relation to today & tomorrow
       tasks.forEach(task => {
-        task.isOverdue = Date.parse(`${task.dueDate.year}-${task.dueDate.month}-${task.dueDate.day}`) < Date.parse(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`);
+        task.isOverdue = Date.parse(`${task.dueDate.year}-${task.dueDate.month}-${task.dueDate.day}`) < Date.parse(`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
         task.dueToday = task.dueDate.year == today.getFullYear() && task.dueDate.month == today.getMonth() + 1 && task.dueDate.day == today.getDate();
         task.dueTomorrow = task.dueDate.year == tomorrow.getFullYear() && task.dueDate.month == tomorrow.getMonth() + 1 && task.dueDate.day == tomorrow.getDate();
       });
@@ -95,7 +95,7 @@ module.exports = function(app) {
     
     const newTask = { ...req.body };
     newTask.id = tasks.length + 1;
-    newTask.isOverdue = Date.parse(`${newTask.dueDate.year}-${newTask.dueDate.month}-${newTask.dueDate.day}`) < Date.parse(today);
+    newTask.isOverdue = Date.parse(`${newTask.dueDate.year}-${newTask.dueDate.month}-${newTask.dueDate.day}`) < Date.parse(`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
     newTask.dueToday = newTask.dueDate.year == today.getFullYear() && newTask.dueDate.month == today.getMonth() + 1 && newTask.dueDate.day == today.getDate();
     newTask.dueTomorrow = newTask.dueDate.year == tomorrow.getFullYear() && newTask.dueDate.month == tomorrow.getMonth() + 1 && newTask.dueDate.day == tomorrow.getDate();
 
