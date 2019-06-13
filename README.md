@@ -47,15 +47,19 @@ The application has no need for authentication, authorization or any type of use
 The use of Docker / Docker Compose to run the application is encouraged.
 
 ### Existing folder structure
-* `public` -- you shouldn't need to modify anything in here
-* `src`
-    * `actions` -- I'd suggest placing action creators/constants in this directory
-    * `components` -- presentational components can go here
-    * `pages` -- actual pages of the application (link submission/list of links) _note: you're also free to keep
-    everything on the same page in order to avoid using `react-router`_
-    * `reducers` -- Redux reducers go in here
-    * `index.js` -- entry point for the web app. Everything should already be setup here.
-    * `server.js` -- fill in anything that you need to create a simple express based API 
+* `backend` -- the folder where the backend lives
+    * `common`
+        * `models` -- task model definition
+        * `server` -- 
+* `client` -- the folder where the front end lives
+    * `public` -- you shouldn't need to modify anything in here
+    * `src`
+        * `actions` -- I'd suggest placing action creators/constants in this directory
+        * `components` -- presentational components can go here
+        * `pages` -- actual pages of the application (link submission/list of links)
+        * `reducers` -- Redux reducers go in here
+        * `index.js` -- entry point for the web app. Everything should already be setup here.
+        * `server.js` -- fill in anything that you need to create a simple express based API 
     
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). For 
 information about using `Create React App`, click the previous link.
