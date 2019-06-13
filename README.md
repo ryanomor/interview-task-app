@@ -17,7 +17,7 @@
 
 * Next in `client`, run: `docker run -d --link app-server:server --name task-app -p 3000:3000 app-frontend` where `--link` creates an alias that can be used to communicate with the backend.
 
-* Once both images have been built successfully, you can navigate to `localhost:3000` to view the app!
+* Once both conatiners are running successfully, you can navigate to `localhost:3000` to view the app!
     * API documentation is at `localhost:3001/explorer`
 
 # Problem Overview
