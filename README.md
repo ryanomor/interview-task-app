@@ -7,18 +7,18 @@
 
 ## (Not so quick) Start
 * In your terminal, navigate to `backend` and execute `docker build -t express-server .`  
-  Verify the container was successfully built by executeing `docker images`.
+  Verify the image was successfully built by executing `docker images`.
 
   Once done, navigate to `client` and execute `docker build -t app-frontend .`  
-  Again, make sure the container was successfully built using `docker images`.
+  Again, make sure the image was successfully built using `docker images`.
+
+### Now let's generate and run an instance (container) of our images!
+* In `backend` run the command: `docker run -d --name app-server -p 3001:3001 express-server`. The `-d` runs the command in detahced mode, `--name` flag gives the app a name and `-p` tag maps your machine's local port to the port exposed in the container.
+
+* Next in `client`, run: `docker run -d --link app-server:server --name task-app -p 3000:3000 app-frontend` where `--link` creates an alias that can be used to communicate with the backend.
 
 * Once both images have been built successfully, you can navigate to `localhost:3000` to view the app!
     * API documentation is at `localhost:3001/explorer`
-
-### Now let's generate and run an instance of our images!
-* In `backend` run the command: `docker run -d --name app-server -p 3001:3001 express-server`. The `-d` runs the command in detahced mode, `--name` flag gives the app a name and `-p` tag maps your machine's local port to the port exposed in the container.
-
-Next in `client`, run: `docker run -d --link app-server:server --name task-app -p 3000:3000 app-frontend` where `--link` creates an alias that can be used to communicate with the backend.
 
 # Problem Overview
 To get started, install all dependencies by running `yarn` or `npm install`. As an optional bonus, feel free to write
