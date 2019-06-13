@@ -50,7 +50,9 @@ The use of Docker / Docker Compose to run the application is encouraged.
 * `backend` -- the folder where the backend lives
     * `common`
         * `models` -- task model definition
-        * `server` -- 
+        * `server` -- task model configuration
+            * `boot`
+                * `routes` -- where the express based LoopBack API routes are exported
 * `client` -- the folder where the front end lives
     * `public` -- you shouldn't need to modify anything in here
     * `src`
@@ -59,7 +61,6 @@ The use of Docker / Docker Compose to run the application is encouraged.
         * `pages` -- actual pages of the application (link submission/list of links)
         * `reducers` -- Redux reducers go in here
         * `index.js` -- entry point for the web app. Everything should already be setup here.
-        * `server.js` -- fill in anything that you need to create a simple express based API 
     
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). For 
 information about using `Create React App`, click the previous link.
